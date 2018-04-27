@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title (click)="clickReturn()">
+      Return
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list *ngIf = "musicItemsIsLoad == true">
+	  <ion-item *ngFor = "let musicItem of musicItems">
+	    {{musicItem.name}}
+	    <ion-icon name="{{musicItem.buttonIcon}}" item-end (click)="clickChangeState(musicItem.index)"></ion-icon>
+	    <ion-icon name="md-more" item-end></ion-icon>
+	  </ion-item>
+  </ion-list>
+</ion-content>
