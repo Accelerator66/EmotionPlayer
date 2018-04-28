@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Platform } from 'ionic-angular';
+import { Events } from 'ionic-angular';
+import { ActionSheetController } from 'ionic-angular';
 
 import { File } from '@ionic-native/file';
 import { AudioService } from '../../services/AudioService';
@@ -11,34 +13,27 @@ import { AudioService } from '../../services/AudioService';
 })
 export class SonglistPage {
 
-  public musicItems: any;
   public musicItemsIsLoad: boolean = false;
-  public musicCurrentIndex: number = null;
 
-  constructor(public navCtrl: NavController, public file: File, public plt: Platform, public audioService: AudioService) {
+  constructor(
+  	public navCtrl: NavController, 
+  	public file: File, 
+  	public plt: Platform, 
+  	public audioService: AudioService, 
+  	public events: Events, 
+  	public actionSheetCtrl: ActionSheetController) {
+
+    if(this.audioService.audioList != null){
+      this.musicItemsIsLoad = true;
+    }
     // use native api need platform to be ready
     this.plt.ready().then(readySource =>{
       console.log('Platform ready from', readySource);
-      this.file.listDir(this.file.applicationDirectory, 'www/assets/musics').then(files => {
-        this.musicItems = [];
-        let count = 0;
-        for(let file of files){
-          if(file.isDirectory == true){
-            console.log("Folder name:" + file.name);
-          }
-          else if(file.isFile == true){
-            console.log("File name:" + file.name);
-            this.musicItems.push({
-              index : count,
-              name: file.name,
-              buttonIcon: this.audioService.isCurrent(file.name)?'ios-pause-outline':'ios-play-outline'
-            });
-            count ++;
-          }
-        }
-        console.log(this.musicItems.length);
-        this.musicItemsIsLoad = true; 
-      });
+      events.subscribe('AudioService:songlistReady', () => {
+	    // songlist is loaded
+	    console.log("Get AudioService:songlistReady.");
+	    this.musicItemsIsLoad = true;
+	  });
     });
   }
 
@@ -46,25 +41,44 @@ export class SonglistPage {
   	this.navCtrl.pop();
   }
 
-  clickChangeState(index: number){
-  	let name = this.musicItems[index].name;
+  clickChangeState(name: string, type: string){
     if(!this.audioService.isCurrent(name)){
-    	if(this.musicCurrentIndex != null){
-    		this.musicItems[this.musicCurrentIndex].buttonIcon = 'ios-play-outline';
-    	}
-    	this.audioService.loadSong(name);
-    	this.musicCurrentIndex = index;
+    	this.audioService.loadSong(name, type);
     }
     if(this.audioService.audioState === 'playing'){
     	this.audioService.pause();
-    	this.audioService.audioState = 'paused';
-    	this.musicItems[index].buttonIcon = 'ios-play-outline';
     }
     else{
     	this.audioService.play();
-    	this.audioService.audioState = 'playing';
-    	this.musicItems[index].buttonIcon = 'ios-pause-outline';
     }
+  }
+
+  presentActionSheet(item: any) {
+    let actionSheet = this.actionSheetCtrl.create({
+	    title: item.music_name,
+	    buttons: [
+	      {
+	        text: item.singer,
+	        icon: 'ios-person-outline',
+	        handler: () => {
+	          console.log('Singer clicked');
+	        }
+	      },{
+	        text: item.album,
+	        icon: 'ios-disc-outline',
+	        handler: () => {
+	          console.log('Album clicked');
+	        }
+	      },{
+	        text: 'Cancel',
+	        role: 'cancel',
+	        handler: () => {
+	          console.log('Cancel clicked');
+	        }
+	      }
+	    ]
+	});
+	actionSheet.present();
   }
 
 }

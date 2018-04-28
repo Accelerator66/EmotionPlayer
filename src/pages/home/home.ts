@@ -28,7 +28,7 @@ export class HomePage {
     this.cvs = this._cvs.nativeElement;
     this.ctx = this.cvs.getContext('2d');
     // adjust canvas ratio
-    this.init_canvas(this.cvs, this.ctx, 100, -1);
+    this.init_canvas(this.cvs, this.ctx, 75, -1);
 
     this.plt.ready().then(readySource =>{
       this.audio = this._HTMLaudio.nativeElement;
@@ -38,12 +38,12 @@ export class HomePage {
 
     // test canvas
     this.ctx.beginPath();
-            this.ctx.lineWidth = 10;
-            this.ctx.lineCap = "round";
-            this.ctx.moveTo(20, this.cvs.height / (2 * this.ratio));
-            this.ctx.lineTo(100, this.cvs.height / (2 * this.ratio));
-            this.ctx.strokeStyle = "rgba(255,255,255,0.7)";
-            this.ctx.stroke();
+    this.ctx.lineWidth = 10;
+    this.ctx.lineCap = "round";
+    this.ctx.moveTo(20, this.cvs.height / (2 * this.ratio));
+    this.ctx.lineTo(100, this.cvs.height / (2 * this.ratio));
+    this.ctx.strokeStyle = "rgba(255,255,255,0.7)";
+    this.ctx.stroke();
 
   }
 
