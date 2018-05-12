@@ -3,6 +3,10 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+import {
+  MdcFabModule,
+  MdcMenuModule
+} from '@angular-mdc/web';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -10,7 +14,9 @@ import { SonglistPage } from '../pages/songlist/songlist';
 
 import { File } from '@ionic-native/file';
 import { Media } from '@ionic-native/media';
+import { HTTP } from '@ionic-native/http';
 import { AudioService } from '../services/AudioService';
+import { NeteaseAPIService } from '../services/NeteaseAPIService';
 
 @NgModule({
   declarations: [
@@ -20,7 +26,9 @@ import { AudioService } from '../services/AudioService';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    MdcFabModule,
+    MdcMenuModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -34,7 +42,9 @@ import { AudioService } from '../services/AudioService';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     File,
     Media,
-    AudioService
+    HTTP,
+    AudioService,
+    NeteaseAPIService
   ]
 })
 export class AppModule {}

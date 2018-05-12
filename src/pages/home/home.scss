@@ -1,3 +1,82 @@
 page-home {
+}
 
+.my-songlist-item{
+	font-size: 17px;
+	height: 50px
+}
+
+.my-songlist-item-name{
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.my-list-divider{
+	margin-left: 15px !important;
+	margin-right: 15px !important;
+}
+
+.my-songlist-title{
+	margin-right: 0 !important;
+	margin-left: 0 !important;
+	padding-left: 13px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.my-background-1{
+	background-color: #f2f2f2;
+}
+.my-background-2{
+	background-color: #ffffff;
+}
+
+.my-img{
+	border-radius: 5px;
+}
+.my-img-title{
+	margin-top: 5px !important;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    font-size: 12px
+}
+
+.my-item-title{
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    font-size: 15px
+}
+
+.my-badge{
+	background-color: rgba(255,255,255,0);
+	color: red;
+	border: solid 1px red;
+	margin-right: 5px;
+	font-size: 11px;
+	padding-top: 5px
+}
+
+.my-header-img{
+	height: 30px;
+	width: 30px;
+	border-radius: 15px;
+	margin-left: 5px;
+	margin-right: 5px
+}
+.my-header-img-badge{
+	height: 14px;
+	width: 14px;
+	border-radius: 7px;
+	font-size: 10px;
+	padding-top: 3px;
+	padding-right: 0;
+	padding-left: 0;
+	padding-bottom: 0;
+	position: absolute;
+	right: 5px;
+	bottom: 7px;
 }

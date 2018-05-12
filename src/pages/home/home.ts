@@ -4,7 +4,9 @@ import { Platform } from 'ionic-angular';
 
 import { SonglistPage } from '../songlist/songlist';
 import { File } from '@ionic-native/file';
+import { Events } from 'ionic-angular';
 import { AudioService } from '../../services/AudioService';
+import { NeteaseAPIService } from '../../services/NeteaseAPIService';
 
 @Component({
   selector: 'page-home',
@@ -14,13 +16,52 @@ export class HomePage {
 
   @ViewChild('cvs') _cvs: ElementRef;
   @ViewChild('toolbar') _toolbar: ElementRef;
-  @ViewChild('HTMLaudio') _HTMLaudio: ElementRef;
+
   private cvs: any;
   private ctx: any;
-  public audio: any;
   private ratio: number = 1;
+  
+  //private analyser: any;
+  //private FFTsz: number = 16384;  // fft process size
+  //private barNum: number = 40;  // fft bars number
+  //private barPad: number = 10;  // fft bars padding
 
-  constructor(public navCtrl: NavController, public plt: Platform, public file: File, public audioService: AudioService) {
+  private pageTab: number = 2;
+  private isRecSonglistLoaded: boolean = false;
+  private isHotSonglistLoaded: boolean = false;
+
+  constructor(public navCtrl: NavController, 
+    public plt: Platform, 
+    public file: File,
+    public events: Events,
+    public audioService: AudioService,
+    public neteaseAPIService: NeteaseAPIService) {
+
+    // if songlist is loaded, then show the topic
+    // otherwise the topic will be hidden
+    this.events.subscribe('NeteaseAPIService:getRecSonglist', (state) => {
+      if(parseInt(state) == 1){
+        this.isRecSonglistLoaded = true;
+      }
+      else if(parseInt(state) == 0){
+        // todo (load local cache)
+      }
+      else{
+        // todo
+      }
+    });
+
+    this.events.subscribe('NeteaseAPIService:getHotSonglist', (state) => {
+      if(parseInt(state) == 1){
+        this.isHotSonglistLoaded = true;
+      }
+      else if(parseInt(state) == 0){
+        // todo (load local cache)
+      }
+      else{
+        // todo
+      }
+    });
 
   }
 
@@ -28,22 +69,12 @@ export class HomePage {
     this.cvs = this._cvs.nativeElement;
     this.ctx = this.cvs.getContext('2d');
     // adjust canvas ratio
-    this.init_canvas(this.cvs, this.ctx, 75, -1);
+    this.init_canvas(this.cvs, this.ctx, 50, -1);
 
     this.plt.ready().then(readySource =>{
-      this.audio = this._HTMLaudio.nativeElement;
-      this.audio.volume = 0;  // set volume to 0, we only use this to FFT
-      //this.audio.src = this.audioService.audioRootPath + this.audioService.audioPlayingName;
+      //this.prepareAudioContext();
+      //this.drawFrame();
     });
-
-    // test canvas
-    this.ctx.beginPath();
-    this.ctx.lineWidth = 10;
-    this.ctx.lineCap = "round";
-    this.ctx.moveTo(20, this.cvs.height / (2 * this.ratio));
-    this.ctx.lineTo(100, this.cvs.height / (2 * this.ratio));
-    this.ctx.strokeStyle = "rgba(255,255,255,0.7)";
-    this.ctx.stroke();
 
   }
 
@@ -81,8 +112,62 @@ export class HomePage {
     }
   }
 
+  // prepare work for fft
+  /*
+  prepareAudioContext() {
+      
+      window.AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.msAudioContext;
+      window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame;
+      window.cancelAnimationFrame = window.cancelAnimationFrame || window.webkitCancelAnimationFrame || window.mozCancelAnimationFrame || window.msCancelAnimationFrame;
+      
+      let myAudioContext = new AudioContext();
+      let source = myAudioContext.createMediaElementSource(this.audio);
+      this.analyser = myAudioContext.createAnalyser();
+      this.analyser.fftSize = this.FFTsz;
+      source.connect(this.analyser);
+      this.analyser.connect(myAudioContext.destination);
+      let processor = myAudioContext.createScriptProcessor(1024);
+      processor.connect(myAudioContext.destination);
+      this.analyser.connect(processor);
+  }*/
+
+  // draw fft frame
+  /*
+  drawFrame() {
+      let drawOne = function(that: any){
+          that.ctx.clearRect(0, 0, that.cvs.width, that.cvs.height);
+          let array = new Uint8Array(that.analyser.frequencyBinCount);
+          that.analyser.getByteFrequencyData(array);
+          let spaceSize = Math.round((that.cvs.width/that.ratio-2*that.barPad)/(that.barNum-1));
+          for(let i=0; i<that.barNum; i++){
+              that.ctx.save();
+              that.ctx.beginPath();
+              let h = array[Math.round(i*that.FFTsz/(that.barNum*2))]/(512*that.ratio/that.cvs.height);
+              that.ctx.lineWidth = 3;
+              that.ctx.lineCap = "round";
+              that.ctx.moveTo(i * spaceSize + that.barPad, that.cvs.height / (2 * that.ratio) - h);
+              that.ctx.lineTo(i * spaceSize + that.barPad, that.cvs.height / (2 * that.ratio) + h);
+              that.ctx.strokeStyle = "rgba(255,255,255,0.7)";
+              that.ctx.stroke();
+              that.ctx.restore();
+          }
+          requestAnimationFrame(function(){
+            drawOne(that);
+          });
+      }
+      let that = this;
+      requestAnimationFrame(function(){
+          drawOne(that);
+      });
+  }*/
+
   clickShowSongList(){
+    console.log(this);
   	this.navCtrl.push(SonglistPage);
+  }
+
+  switchTab(id: string){
+    this.pageTab = parseInt(id);
   }
 
 }

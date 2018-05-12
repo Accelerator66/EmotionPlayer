@@ -54,17 +54,34 @@ export class AudioService {
 
     // add event listener for songs
     this.audioPlaying.onStatusUpdate.subscribe(status => {
-      console.log(status);
-      /*
-      if(status === Media.MEDIA_NONE){}
-      else if(status === Media.MEDIA_STARTING){}
-      else if(status === Media.MEDIA_RUNNING){}
-      else if(status === Media.MEDIA_PAUSED){
-        this.audioState = 'paused';
+      //console.log(status);
+      
+      if(status === 0){ // null code
+        this.audioState = null;
+        console.log('Music state: null.');
+        this.events.publish('AudioService:MusicNoPlaying');
       }
-      else if(status === Media.MEDIA_STOPPED){
+      else if(status === 1){  // loaded code
+        this.audioState = 'loaded';
+        console.log('Music state: loaded.');
+        this.events.publish('AudioService:MusicNoPlaying');
+      }
+      else if(status === 2){  // running code
+        this.audioState = 'playing';
+        console.log('Music state: playing.');
+        this.events.publish('AudioService:MusicPlaying');
+      }
+      else if(status === 3){  // pause code
+        this.audioState = 'paused';
+        console.log('Music state: paused.');
+        this.events.publish('AudioService:MusicNoPlaying');
+      }
+      else if(status === 4){  // stop code
         this.audioState = 'stoped';
-      }*/
+        console.log('Music state: stoped.');
+        this.events.publish('AudioService:MusicNoPlaying');
+      }
+
     });
   }
 

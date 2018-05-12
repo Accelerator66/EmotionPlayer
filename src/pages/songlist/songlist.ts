@@ -29,7 +29,7 @@ export class SonglistPage {
     // use native api need platform to be ready
     this.plt.ready().then(readySource =>{
       console.log('Platform ready from', readySource);
-      events.subscribe('AudioService:songlistReady', () => {
+      this.events.subscribe('AudioService:songlistReady', () => {
 	    // songlist is loaded
 	    console.log("Get AudioService:songlistReady.");
 	    this.musicItemsIsLoad = true;
