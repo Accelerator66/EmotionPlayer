@@ -1,6 +1,22 @@
 page-home {
 }
 
+.font-Yahei{
+	font-family: "Microsoft Yahei" !important;
+}
+
+.my-tab-active{
+	color: white !important;
+	border-bottom-color: white;
+    border-bottom-style: solid;
+    font-family: "Microsoft Yahei" !important;
+}
+
+.my-tab{
+	color: white !important;
+	font-family: "Microsoft Yahei" !important;
+}
+
 .my-songlist-item{
 	font-size: 17px;
 	height: 50px
@@ -38,7 +54,7 @@ page-home {
 	margin-top: 5px !important;
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     font-size: 12px
 }
@@ -46,7 +62,7 @@ page-home {
 .my-item-title{
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     font-size: 15px
 }
@@ -61,22 +77,53 @@ page-home {
 }
 
 .my-header-img{
-	height: 30px;
-	width: 30px;
-	border-radius: 15px;
+	height: 36px;
+	width: 36px;
+	border-radius: 18px;
 	margin-left: 5px;
 	margin-right: 5px
 }
-.my-header-img-badge{
-	height: 14px;
-	width: 14px;
-	border-radius: 7px;
-	font-size: 10px;
-	padding-top: 3px;
-	padding-right: 0;
-	padding-left: 0;
-	padding-bottom: 0;
-	position: absolute;
-	right: 5px;
-	bottom: 7px;
+
+// cancel underline of input
+.item-inner {
+	border-bottom-color: transparent !important;
+	box-shadow: none !important;
+}
+
+// white underline of input
+.item-inner-white {
+	border-bottom-color: white !important;
+}
+
+// vertical center
+.vertical-center{
+	display: flex!important;
+    align-content: center!important;
+    align-items: center!important;
+}
+
+// disabled style
+.disabled{
+	pointer-events: none;
+    opacity: 0.4;	
+}
+
+// opacity 0
+.opacity-zero{
+	background-color: rgba(255,255,255,0) !important;
+}
+
+.my-icon-btn-large{
+	font-size: 50px !important;
+	height: 80px !important;
+	width: 80px !important;
+	color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.my-toast{
+	text-align: center
+}
+
+.my-keyboard-hidden{
+	display: none;
 }

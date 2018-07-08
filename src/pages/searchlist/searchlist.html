@@ -1,0 +1,47 @@
+<ion-header>
+  <header class="mdc-top-app-bar" style="background-color: black">
+    <div class="mdc-top-app-bar__row">
+      <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+        <a href="#" class="material-icons mdc-top-app-bar__navigation-icon" (click)="clickReturn()">keyboard_backspace</a>
+        <span class="mdc-top-app-bar__title" style="font-size: 20px">搜索结果</span>
+      </section>
+    </div>
+  </header>
+
+</ion-header>
+
+<ion-content padding>
+	  <!-- used as padding -->
+  	<div style="height: 60px"></div>
+  	<div *ngIf = "isResultLoaded == true && searchTarget == 'song'">
+  		<ion-item *ngFor = "let item of searchResult">
+		    <ion-icon name="ios-play-outline" item-start></ion-icon>
+		    <p style="margin-bottom: 5px; font-size: 15px; color: black">{{item.name}}</p>
+		    <p style="font-size: 12px">{{item.artist.name}}</p>
+		    <ion-icon name="md-more" item-end (click)="presentActionSheet(item)"></ion-icon>
+		</ion-item>
+  	</div>
+  	<div *ngIf = "isResultLoaded == true && searchTarget == 'album'">
+  		<ion-list>
+        <ion-item *ngFor = "let item of searchResult">
+          <ion-thumbnail item-start>
+            <img src="{{audioService.serverAddress + audioService.serverAlbumRoot + item.picUrl}}">
+          </ion-thumbnail>
+          <p style="font-size: 16px; color: black">{{item.name}}</p>
+          <p>{{item.artist.name}}</p>
+          <ion-icon name="md-more" item-end></ion-icon>
+        </ion-item>
+      </ion-list>
+  	</div>
+  	<div *ngIf = "isResultLoaded == true && searchTarget == 'singer'">
+  		<ion-list>
+        <ion-item *ngFor = "let item of searchResult" style="height: 100%">
+          <ion-thumbnail item-start>
+            <img src="{{audioService.serverAddress + audioService.serverSingerRoot + item.picUrl}}">
+          </ion-thumbnail>
+          <p style="font-size: 20px; color: black">{{item.name}}</p>
+          <ion-icon name="md-more" item-end></ion-icon>
+        </ion-item>
+      </ion-list>
+  	</div>
+</ion-content>

@@ -1,0 +1,22 @@
+<ion-content style="text-align: center;">
+  <div style="position: absolute; top: 50%; width: 100%; transform: translateY(-50%);">
+	<h1>Emotion Player</h1>
+  <ion-item>
+    <ion-label color="dark" floating>用户名</ion-label>
+    <ion-input class="my-login-input" [(ngModel)]="name"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label color="dark" floating>密码</ion-label>
+    <ion-input class="my-login-input" type="password" [(ngModel)]="password"></ion-input>
+  </ion-item>
+  <ion-item style="margin-top: 30px">
+	  <button color="dark" icon-start="" ion-button="" class="disable-hover button button-ios button-default button-default-ios button-ios-dark" full style="height: 50px; font-size: 18px" (click)="login()">
+	  	<span class="button-inner">
+	    <ion-icon name="star" role="img" class="icon icon-ios ion-ios-star" aria-label="star"></ion-icon>
+	    登录
+	  	</span>
+	  	<div class="button-effect"></div>
+	  </button>
+  </ion-item>
+  </div>
+</ion-content>

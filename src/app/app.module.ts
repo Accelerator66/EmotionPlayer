@@ -3,48 +3,52 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-import {
-  MdcFabModule,
-  MdcMenuModule
-} from '@angular-mdc/web';
+import { Keyboard } from '@ionic-native/keyboard';
 
 import { MyApp } from './app.component';
+import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
 import { SonglistPage } from '../pages/songlist/songlist';
+import { SearchlistPage } from '../pages/searchlist/searchlist';
 
 import { File } from '@ionic-native/file';
-import { Media } from '@ionic-native/media';
 import { HTTP } from '@ionic-native/http';
+import { IonicStorageModule } from '@ionic/storage';
 import { AudioService } from '../services/AudioService';
 import { NeteaseAPIService } from '../services/NeteaseAPIService';
+import { MainServerService } from '../services/MainServerService';
 
 @NgModule({
   declarations: [
     MyApp,
+    LoginPage,
     HomePage,
-    SonglistPage
+    SonglistPage,
+    SearchlistPage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    MdcFabModule,
-    MdcMenuModule
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    LoginPage,
     HomePage,
-    SonglistPage
+    SonglistPage,
+    SearchlistPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
+    Keyboard,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     File,
-    Media,
     HTTP,
     AudioService,
-    NeteaseAPIService
+    NeteaseAPIService,
+    MainServerService
   ]
 })
 export class AppModule {}

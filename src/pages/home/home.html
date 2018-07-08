@@ -1,32 +1,35 @@
-<!--
-<ion-header>
-  <ion-navbar>
-    <ion-title>
-      TestPage
-    </ion-title>
-  </ion-navbar>
-</ion-header>
-
-<ion-content padding>
-  <p>
-    <button ion-button color="primary" (click)="clickShowSongList()">SongList</button>
-  </p>
-</ion-content>
-
-<ion-footer>
-  <ion-toolbar #toolbar >
-    <audio #HTMLaudio></audio>
-	  <canvas #cvs style="width: 100%; height: 100%"></canvas>
-  </ion-toolbar>
-</ion-footer>-->
-
 <ion-header>
   <header class="mdc-top-app-bar" style="background-color: black">
     <div class="mdc-top-app-bar__row">
       <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-        <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
-        <span class="mdc-top-app-bar__title" style="font-size: 20px">Title</span>
+        <span class="mdc-top-app-bar__title" style="font-size: 20px">Emotion Player</span>
       </section>
+      <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
+        <a class="material-icons mdc-top-app-bar__navigation-icon" (click)="emotionDialogShow()">insert_emoticon</a>
+      </section>
+    </div>
+    <div class="mdc-top-app-bar__row">
+      <nav id="basic-tab-bar" class="mdc-tab-bar" style="width: 90%">
+        <a class="mdc-tab my-tab-active" style="font-size: 15px" *ngIf = "pageTab == 1"> <!-- Tab index : 1 -->
+          歌曲搜索
+        </a>
+        <a class="mdc-tab my-tab" style="font-size: 15px" *ngIf = "pageTab != 1" (click)="switchTab('1')"> <!-- Tab index : 1 -->
+          歌曲搜索
+        </a>
+        <a class="mdc-tab my-tab-active" style="font-size: 15px" *ngIf = "pageTab == 2"> <!-- Tab index : 2 -->
+          今日推荐
+        </a>
+        <a class="mdc-tab my-tab" style="font-size: 15px" *ngIf = "pageTab != 2" (click)="switchTab('2')"> <!-- Tab index : 2 -->
+          今日推荐
+        </a>
+        <a class="mdc-tab my-tab-active" style="font-size: 15px" *ngIf = "pageTab == 3"> <!-- Tab index : 3 -->
+          我的歌单
+        </a>
+        <a class="mdc-tab my-tab"  style="font-size: 15px" *ngIf = "pageTab != 3" (click)="switchTab('3')"> <!-- Tab index : 3 -->
+          我的歌单
+        </a>
+        <span class="mdc-tab-bar__indicator"></span>
+      </nav>
     </div>
   </header>
 
@@ -34,154 +37,237 @@
 
 <ion-content style="padding-left: 0; padding-right: 0; margin-left: 0; margin-right: 0" class="my-background-1">
   <!-- used as padding -->
-  <div style="height: 60px" class="my-background-1"></div>
-  <!-- nav bar -->
-  <nav id="basic-tab-bar" class="mdc-tab-bar my-background-1" style="width: 100%">
-    <a class="mdc-tab mdc-tab--active mdc-elevation--z1" style="font-size: 15px" *ngIf = "pageTab == 1"> <!-- Tab index : 1 -->
-      歌曲搜索
-      <span class="mdc-tab__indicator"></span>
-    </a>
-    <a class="mdc-tab" style="font-size: 12px" *ngIf = "pageTab != 1" (click)="switchTab('1')"> <!-- Tab index : 1 -->
-      歌曲搜索
-      <span class="mdc-tab__indicator"></span>
-    </a>
-    <a class="mdc-tab mdc-tab--active mdc-elevation--z1" style="font-size: 15px" *ngIf = "pageTab == 2"> <!-- Tab index : 2 -->
-      今日推荐
-      <span class="mdc-tab__indicator"></span>
-    </a>
-    <a class="mdc-tab" style="font-size: 12px" *ngIf = "pageTab != 2" (click)="switchTab('2')"> <!-- Tab index : 2 -->
-      今日推荐
-      <span class="mdc-tab__indicator"></span>
-    </a>
-    <a class="mdc-tab mdc-tab--active mdc-elevation--z1" style="font-size: 15px" *ngIf = "pageTab == 3"> <!-- Tab index : 3 -->
-      我的歌单
-      <span class="mdc-tab__indicator"></span>
-    </a>
-    <a class="mdc-tab"  style="font-size: 12px" *ngIf = "pageTab != 3" (click)="switchTab('3')"> <!-- Tab index : 3 -->
-      我的歌单
-      <span class="mdc-tab__indicator"></span>
-    </a>
-  </nav>
-  <div *ngIf = "pageTab == 1">
-    <ion-item>
-      <ion-input placeholder="搜索" clearInput style="border: solid 1px;"></ion-input>
-    </ion-item>
+  <div style="height: 120px" class="my-background-1"></div>
+  <!-- Tab1 search page -->
+  <div *ngIf = "pageTab == 1" class="my-background-2">
+    <ion-grid>
+      <ion-row>
+        <ion-col col-10c>
+          <ion-item style="padding-left: 0; padding-right: 0">
+            <ion-input placeholder="搜索" clearInput style="border: solid 1px" [(ngModel)]="searchInputVal"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col col-2>
+          <button class="mdc-fab material-icons" style="height: 40px; width: 40px; background-color: black" (click)="search()">
+            <span class="mdc-fab__icon">
+              search
+            </span>
+          </button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-list style="width: 100%">
+          <ion-item>
+            <ion-label>搜索目标</ion-label>
+            <ion-select [(ngModel)]="searchTarget" interface="popover">
+              <ion-option value="song">歌曲</ion-option>
+              <ion-option value="album">专辑</ion-option>
+              <ion-option value="singer">歌手</ion-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label>搜索方式</ion-label>
+            <ion-select [(ngModel)]="searchType" *ngIf="searchTarget == 'song'" interface="popover">
+              <ion-option value=0>歌曲名</ion-option>
+              <ion-option value=1>歌手名</ion-option>
+              <ion-option value=2>专辑名</ion-option>
+            </ion-select>
+            <ion-select [(ngModel)]="searchType" *ngIf="searchTarget == 'album'" interface="popover">
+              <ion-option value=3>专辑名</ion-option>
+              <ion-option value=4>歌曲名</ion-option>
+              <ion-option value=5>歌手名</ion-option>
+            </ion-select>
+            <ion-select [(ngModel)]="searchType" *ngIf="searchTarget == 'singer'" interface="popover">
+              <ion-option value=6>歌手名</ion-option>
+              <ion-option value=7>歌曲名</ion-option>
+              <ion-option value=8>专辑名</ion-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
+      </ion-row>
+    </ion-grid>
   </div>
+  <!-- Tab2 main page -->
   <div *ngIf = "pageTab == 2">
     <ion-grid>
       <ion-row style="margin-top: 10px; font-size: 18px">
         <ion-col col-12>
-          <span>推荐歌单</span>
-          <ion-icon name="ios-stats-outline" style="margin-left: 5px"></ion-icon>
+          <span>随机推荐</span>
+          <ion-icon name="ios-refresh-outline" style="margin-left: 5px" (click)="mainServerService.getRandomRec()"></ion-icon>
         </ion-col>
       </ion-row>
       <ion-row style="padding-top: 8px" class="mdc-elevation--z1 my-background-2">
-      <ion-row *ngIf = "isRecSonglistLoaded == true">
-        <ion-col col-4 *ngFor = "let item of neteaseAPIService.recSonglist[0]">
-          <img src="{{item.picUrl}}" class="my-img">
-          <p class="my-img-title">{{item.name}}</p>
-        </ion-col>
-      </ion-row>
-      <ion-row *ngIf = "isRecSonglistLoaded == true">
-        <ion-col col-4 *ngFor = "let item of neteaseAPIService.recSonglist[1]">
-          <img src="{{item.picUrl}}" class="my-img">
+      <ion-row>
+        <ion-col col-4 *ngFor = "let item of mainServerService.randomRecList">
+          <img src="{{item.album.picUrl}}" class="my-img" (error)="imgError()">
           <p class="my-img-title">{{item.name}}</p>
         </ion-col>
       </ion-row>
     </ion-row>
     </ion-grid>
-    <ion-grid *ngIf = "isHotSonglistLoaded == true">
+    <ion-grid>
       <ion-row style="margin-top: 10px; font-size: 18px">
         <ion-col col-12>
-          <span>热门播放</span>
+          <span>情绪推荐</span>
           <ion-icon name="ios-pulse-outline" style="margin-left: 5px"></ion-icon>
         </ion-col>
       </ion-row>
-      <ion-row class="my-background-2 mdc-elevation--z1" style="margin-bottom: 5px" *ngFor = "let item of neteaseAPIService.hotSonglist">
+      <ion-row class="my-background-2 mdc-elevation--z1" style="margin-bottom: 5px" *ngFor = "let item of mainServerService.emotionRecList">
         <ion-col col-5>
-          <img src="{{item.coverImgUrl}}" class="my-img">
+          <img src="{{item.album.picUrl}}" class="my-img" (error)="imgError()">
         </ion-col>
         <ion-col col-7>
-          <p class="my-item-title">
-            <ion-badge class="my-badge">{{item.tags[0]}}</ion-badge>
+          <p class="my-item-title" style="margin-right: 8px">
+            <ion-badge class="my-badge">{{mainServerService.emotionRecList.indexOf(item) + 1}}</ion-badge>
             {{item.name}}
           </p>
-          <div style="font-size: 12px">
-            <span style="margin-right: 10px">
-            <ion-icon name="ios-play-outline" style="margin-right: 3px"></ion-icon>
-            {{item.playCount}}</span>
+          <div style="font-size: 13; margin-left: 10px">
+            <span style="margin-right: 15px">
+            <ion-icon name="ios-heart-outline" style="margin-right: 3px; color: blue"></ion-icon>
+            {{item.valence.toString().substring(0,5)}}</span>
             <span>
-            <ion-icon name="ios-chatbubbles-outline" style="margin-right: 3px"></ion-icon>
-            {{item.commentCount}}</span>
+            <ion-icon name="ios-flame-outline" style="margin-right: 3px; color: red"></ion-icon>
+            {{item.arousal.toString().substring(0,5)}}</span>
           </div>
           <!-- used as divider -->
-          <hr class="mdc-list-divider" style="margin: 5px">
-          <ion-row style="margin-top: 2px">
+          <hr class="mdc-list-divider" style="margin-top: 10px">
+          <ion-row style="margin-top: 5px">
             <ion-col col-3>
-              <img src="{{item.creator.avatarUrl}}" class="my-header-img">
-              <ion-badge class="my-header-img-badge">V</ion-badge>
+              <img src="{{audioService.serverAddress + audioService.serverSingerRoot + item.artist.picUrl}}" class="my-header-img" (error)="imgError()">
             </ion-col>
-            <ion-col col-9 style="padding-top: 12px; font-size: 12px">
-              {{item.creator.nickname}}
+            <ion-col col-9 style="padding-top: 14px; font-size: 14px">
+              {{item.artist.name}}
             </ion-col>
           </ion-row>
         </ion-col>
       </ion-row>
     </ion-grid>
   </div>
-  <div class="mdc-list-group" style="margin-top: 10px" *ngIf = "pageTab == 3">  <!-- Tab 3: Song list -->
-    <ul class="mdc-list">
-      <li class="mdc-list-item my-songlist-item">
+  <div class="mdc-list-group my-background-2" style="margin-top: 10px" *ngIf = "pageTab == 3">  <!-- Tab 3: Song list -->
+    <ul class="mdc-list font-Yahei">
+      <li class="mdc-list-item my-songlist-item" (click)="presentToastDuration('死于懒惰⚆_⚆', 1000)">
         <span class="mdc-list-item__text my-songlist-item-name">最近播放</span>
         <span class="mdc-list-item__meta material-icons" aria-hidden="true">more_vert</span>
       </li>
       <li role="separator" class="mdc-list-divider my-list-divider"></li>
-      <li class="mdc-list-item my-songlist-item">
+      <li class="mdc-list-item my-songlist-item" (click)="presentToastDuration('脑壳疼⚆_⚆', 1000)">
         <span class="mdc-list-item__text my-songlist-item-name">下载歌曲</span>
         <span class="mdc-list-item__meta material-icons" aria-hidden="true">more_vert</span>
       </li>
-    </ul>
-
-    <h3 class="mdc-list-group__subheader my-background-1 my-songlist-title" style="font-size: 13px">本地歌单</h3>
-    <ul class="mdc-list">
-      <li class="mdc-list-item my-songlist-item" (click)="clickShowSongList()">
+      <li role="separator" class="mdc-list-divider my-list-divider"></li>
+      <li class="mdc-list-item my-songlist-item" (click)="presentToastDuration('鸽了鸽了⚆_⚆', 1000)">
         <span class="mdc-list-item__text my-songlist-item-name">本地歌曲</span>
         <span class="mdc-list-item__meta material-icons" aria-hidden="true">more_vert</span>
       </li>
-      <li role="separator" class="mdc-list-divider my-list-divider"></li>
-      <li class="mdc-list-item my-songlist-item">
-        <span class="mdc-list-item__text my-songlist-item-name">测试歌单1</span>
-        <span class="mdc-list-item__meta material-icons" aria-hidden="true">more_vert</span>
-      </li>
-      <li role="separator" class="mdc-list-divider my-list-divider"></li>
-      <li class="mdc-list-item my-songlist-item">
-        <span class="mdc-list-item__text my-songlist-item-name">测试歌单2</span>
-        <span class="mdc-list-item__meta material-icons" aria-hidden="true">more_vert</span>
-      </li>
     </ul>
 
-    <h3 class="mdc-list-group__subheader my-background-1 my-songlist-title" style="font-size: 13px">情绪歌单</h3>
-    <ul class="mdc-list">
-      <li class="mdc-list-item my-songlist-item">
-        <span class="mdc-list-item__text my-songlist-item-name">快乐</span>
-        <span class="mdc-list-item__meta material-icons" aria-hidden="true">more_vert</span>
+    <h3 class="mdc-list-group__subheader my-background-1 my-songlist-title font-Yahei" style="font-size: 13px">我的歌单</h3>
+    <ul class="mdc-list font-Yahei" *ngIf = "isPlatformsLoaded == true">
+      <li class="mdc-list-item my-songlist-item" (click)="presentListNameAlert()">
+        <span class="mdc-list-item__text my-songlist-item-name">添加歌单</span>
       </li>
       <li role="separator" class="mdc-list-divider my-list-divider"></li>
-      <li class="mdc-list-item my-songlist-item">
-        <span class="mdc-list-item__text my-songlist-item-name">伤心</span>
-        <span class="mdc-list-item__meta material-icons" aria-hidden="true">more_vert</span>
+      <li class="mdc-list-item my-songlist-item" (click)="synchronize()">
+        <span class="mdc-list-item__text my-songlist-item-name">同步歌单</span>
       </li>
-      <li role="separator" class="mdc-list-divider my-list-divider"></li>
-      <li class="mdc-list-item my-songlist-item">
-        <span class="mdc-list-item__text my-songlist-item-name">寂寞</span>
-        <span class="mdc-list-item__meta material-icons" aria-hidden="true">more_vert</span>
+      <span *ngFor = "let item of audioService.audioLists">
+        <div *ngIf = "item.id != 'happy' && item.id != 'sad'">
+        <li role="separator" class="mdc-list-divider my-list-divider"></li>
+        <li class="mdc-list-item my-songlist-item" (click)="clickShowSongList(item.id)">
+          <span class="mdc-list-item__text my-songlist-item-name">{{item.name}}</span>
+          <span class="mdc-list-item__meta material-icons" aria-hidden="true" (click)="presentActionSheet(item, $event)">more_vert</span>
+        </li>
+        </div>
+      </span>
+    </ul>
+
+    <h3 class="mdc-list-group__subheader my-background-1 my-songlist-title font-Yahei" style="font-size: 13px">情绪歌单</h3>
+    <ul class="mdc-list font-Yahei">
+      <li class="mdc-list-item my-songlist-item" (click)="buildEmotionSonglist()">
+        <span class="mdc-list-item__text my-songlist-item-name">创建情绪歌单</span>
       </li>
+      <div *ngIf="audioService.isEmotionSonglistCreated == true">
+        <li role="separator" class="mdc-list-divider my-list-divider"></li>
+        <li class="mdc-list-item my-songlist-item" (click)="clickShowSongList('happy')">
+          <span class="material-icons" style="margin-right: 20px">sentiment_satisfied_alt</span>
+          <span class="mdc-list-item__text my-songlist-item-name">(๑✦ˑ̫✦)✨</span>
+          <span class="mdc-list-item__meta material-icons" aria-hidden="true">more_vert</span>
+        </li>
+        <li role="separator" class="mdc-list-divider my-list-divider"></li>
+        <li class="mdc-list-item my-songlist-item" (click)="clickShowSongList('sad')">
+          <span class="material-icons" style="margin-right: 20px">sentiment_very_dissatisfied</span>
+          <span class="mdc-list-item__text my-songlist-item-name">  ( ´°̥̥̥̥̥̥̥̥ω°̥̥̥̥̥̥̥̥`)</span>
+          <span class="mdc-list-item__meta material-icons" aria-hidden="true">more_vert</span>
+        </li>
+      </div>
     </ul>
   </div>
+  <aside id="emotion-dialog"
+      class="mdc-dialog"
+      role="alertdialog"
+      aria-labelledby="my-mdc-dialog-label"
+      aria-describedby="my-mdc-dialog-description"
+      style="background-color: rgba(0,0,0,0.5)">
+      <div class="mdc-dialog__surface opacity-zero mdc-elevation--z0">
+        <section id="my-mdc-dialog-description" class="mdc-dialog__body" style="padding: 0; margin: 0;">
+          <canvas #emotioncvs style="width: 100%; height: 100%" (click)="paintEnotionPoint($event)"></canvas>
+          <button class="mdc-button" style="height: 0; width: 0"></button>
+        </section>
+      </div>
+      <div class="mdc-dialog__backdrop"></div>
+  </aside>
+  <aside id="detail-dialog"
+      class="mdc-dialog"
+      role="alertdialog"
+      aria-labelledby="my-mdc-dialog-label"
+      aria-describedby="my-mdc-dialog-description"
+      style="background-color: rgba(0,0,0,0.5)">
+      <div class="mdc-dialog__surface opacity-zero mdc-elevation--z0">
+        <section id="my-mdc-dialog-description" class="mdc-dialog__body" style="padding: 0; margin: 0;">
+          <ion-row>
+            <div style="width: 15%"></div>
+            <canvas #piccvs style="position: absolute; left: 15%"></canvas>
+            <canvas #detailcvs (click)="moveSongPos($event)" style="position: absolute; left: 15%; opacity: 0.9"></canvas>
+            <canvas #padcvs></canvas>
+            <div style="width: 15%"></div>
+          </ion-row>
+          <ion-row style="margin-right: 15px; margin-left: 15px; padding-right: 5px; padding-left: 5px">
+            <ion-col class="justify-content-center align-items-center" col-4>
+              <button *ngIf="audioService.audioListMode == 'single'" class="mdc-icon-button material-icons my-icon-btn-large" (click)="audioService.modeToRandom()">repeat_one</button>
+              <button *ngIf="audioService.audioListMode == 'order'" class="mdc-icon-button material-icons my-icon-btn-large" (click)="audioService.modeToSingle()">repeat</button>
+              <button *ngIf="audioService.audioListMode == 'random'" class="mdc-icon-button material-icons my-icon-btn-large" (click)="audioService.modeToOrder()">shuffle</button>
+            </ion-col>
+            <ion-col class="justify-content-center align-items-center" col-4>
+              <button *ngIf="audioService.audioState && audioService.audioState == 'playing'" class="mdc-icon-button material-icons my-icon-btn-large" (click)="playOrPauseMusic()">pause_circle_outline</button>
+              <button *ngIf="!audioService.audioState || audioService.audioState != 'playing'" class="mdc-icon-button material-icons my-icon-btn-large" (click)="playOrPauseMusic()">play_circle_outline</button>
+            </ion-col>
+            <ion-col class="justify-content-center align-items-center" col-4>
+              <button class="mdc-icon-button material-icons my-icon-btn-large" (click)="audioService.nextSong()">skip_next</button>
+            </ion-col>
+          </ion-row>
+        </section>
+      </div>
+      <div class="mdc-dialog__backdrop"></div>
+  </aside>
+  <ion-fab right bottom  class="{{keyboardRelativeStyle}}" *ngIf="pageTab == 2">
+	<button ion-fab color="dark" (click)="mainServerService.getEmotionRec(audioService.valence, audioService.arousal, 10)"><ion-icon name="ios-refresh-outline"></ion-icon></button>
+  </ion-fab>
 </ion-content>
 
-<ion-footer>
+<ion-footer class="{{keyboardRelativeStyle}} mdc-elevation--z2">
+
   <ion-toolbar #toolbar >
-    <canvas #cvs style="width: 100%; height: 100%"></canvas>
+    <ion-grid>
+      <ion-row style="height: 65px" (click)="detailDialogShow()">
+        <ion-col col-2 style="text-align: center">
+          <img src="../../assets/imgs/notFound_squre.jpg" #simg (error)="imgError()" />
+        </ion-col>
+        <ion-col col-10 style="">
+          <canvas #cvs style="width: 100%; height: 100%"></canvas>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-toolbar>
+  
+  <audio #audio></audio>
 </ion-footer>
